@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore, collection, addDoc, query, onSnapshot, orderBy, serverTimestamp, doc, getDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -9,9 +9,19 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 
 // Global variables provided by the Canvas environment
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const appId = 'fish-tracker-778bf';
+const firebaseConfig = {
+  apiKey: "AIzaSyB6zi3UJu7lZ39HaUzwLJTZOBU-UtUH0A0",
+  authDomain: "fish-tracker-778bf.firebaseapp.com",
+  projectId: "fish-tracker-778bf",
+  storageBucket: "fish-tracker-778bf.firebasestorage.app",
+  messagingSenderId: "324791791965",
+  appId: "1:324791791965:web:9f49ace037936e01b1f8b4",
+  measurementId: "G-ZXZF6EX9JE"
+};
+
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+const provider = new GoogleAuthProvider();
 
 // Helper function to convert base64 to ArrayBuffer (for audio playback, if needed later)
 function base64ToArrayBuffer(base64) {
@@ -147,18 +157,6 @@ function App() {
         if (user) {
           setUserId(user.uid);
           setIsAuthReady(true);
-        } else {
-          try {
-            if (initialAuthToken) {
-              await signInWithCustomToken(firebaseAuth, initialAuthToken);
-            } else {
-              await signInAnonymously(firebaseAuth);
-            }
-          } catch (error) {
-            console.error("Firebase authentication error:", error);
-            setMessage(`Authentication failed: ${error.message}`);
-            setMessageType('error');
-          }
         }
       });
     } catch (error) {
@@ -483,10 +481,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-4 font-inter">
-      <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/recharts.min.js"></script>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-blue-800 mb-6">
           🐟 Fishing Payoff Tracker 🎣
@@ -497,6 +491,8 @@ function App() {
             {message}
           </div>
         )}
+
+        {!userId && (<button id="loginButton" onClick={() => signInWithPopup(auth, provider)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 shadow-md mb-6">Sign-in (Required to add new data)</button>)}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Payoff Summary */}
@@ -550,7 +546,7 @@ function App() {
               />
             </div>
             <div>
-              <label htmlFor="estimatedValue" className="block text-gray-700 text-sm font-bold mb-2">Estimated Value ($)</label>
+              <label htmlFor="estimatedValue" className="block text-gray-700 text-sm font-bold mb-2">Value ($)</label>
               <input
                 type="number"
                 id="estimatedValue"
@@ -586,7 +582,7 @@ function App() {
               />
             </div>
             <div>
-              <label htmlFor="fishImageUpload" className="block text-gray-700 text-sm font-bold mb-2">Upload Fish Image (Optional)</label>
+              <label htmlFor="fishImageUpload" className="block text-gray-700 text-sm font-bold mb-2">Photo (Optional)</label>
               <input
                 type="file"
                 id="fishImageUpload"
