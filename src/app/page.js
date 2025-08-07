@@ -180,7 +180,7 @@ function App() {
         ...doc.data(),
         dateCaught: doc.data().dateCaught?.toDate() || new Date()
       }));
-      catches.sort((a, b) => b.dateCaught.getTime() - a.dateCaught.getTime());
+      catches.sort((a, b) => a.dateCaught.getTime() - b.dateCaught.getTime());
       setFishCatches(catches);
     }, (error) => {
       console.error("Error fetching fish catches:", error);
@@ -782,7 +782,7 @@ function App() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {fishCatches.map((fish) => (
+                    {fishCatches.slice(0).reverse().map((fish) => (
                       <tr key={fish.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {fish.imageUrl ? (
