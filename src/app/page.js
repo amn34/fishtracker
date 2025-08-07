@@ -171,7 +171,7 @@ function App() {
   useEffect(() => {
     if (!db || !userId || !isAuthReady) return;
 
-    const fishCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/fishCatches`);
+    const fishCollectionRef = collection(db, `artifacts/${appId}/fishCatches`);
     const q = query(fishCollectionRef, orderBy('dateCaught', 'asc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -195,7 +195,7 @@ function App() {
   useEffect(() => {
     if (!db || !userId || !isAuthReady) return;
 
-    const gearCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/gearPurchases`);
+    const gearCollectionRef = collection(db, `artifacts/${appId}/gearPurchases`);
     const q = query(gearCollectionRef, orderBy('datePurchased', 'asc'));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -261,7 +261,7 @@ function App() {
           }
         }
 
-        const storageRef = ref(storage, `artifacts/${appId}/users/${userId}/fish_images/${fishImageFile.name}-${Date.now()}`);
+        const storageRef = ref(storage, `artifacts/${appId}/fish_images/${fishImageFile.name}-${Date.now()}`);
         const uploadResult = await uploadBytes(storageRef, fishImageFile);
         finalImageUrl = await getDownloadURL(uploadResult.ref);
         finalImagePath = uploadResult.ref.fullPath;
@@ -293,11 +293,11 @@ function App() {
       };
 
       if (editingFish) {
-        const docRef = doc(db, `artifacts/${appId}/users/${userId}/fishCatches`, editingFish.id);
+        const docRef = doc(db, `artifacts/${appId}/fishCatches`, editingFish.id);
         await updateDoc(docRef, fishData);
         setMessage('Fish catch updated successfully!');
       } else {
-        const fishCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/fishCatches`);
+        const fishCollectionRef = collection(db, `artifacts/${appId}/fishCatches`);
         await addDoc(fishCollectionRef, fishData);
         setMessage('Fish added successfully!');
       }
@@ -336,11 +336,11 @@ function App() {
       };
 
       if (editingGear) {
-        const docRef = doc(db, `artifacts/${appId}/users/${userId}/gearPurchases`, editingGear.id);
+        const docRef = doc(db, `artifacts/${appId}}/gearPurchases`, editingGear.id);
         await updateDoc(docRef, gearData);
         setMessage('Gear item updated successfully!');
       } else {
-        const gearCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/gearPurchases`);
+        const gearCollectionRef = collection(db, `artifacts/${appId}/gearPurchases`);
         await addDoc(gearCollectionRef, gearData);
         setMessage('Gear added successfully!');
       }
@@ -406,7 +406,7 @@ function App() {
 
     if (window.confirm("Are you sure you want to delete this fish catch?")) {
       try {
-        const docRef = doc(db, `artifacts/${appId}/users/${userId}/fishCatches`, id);
+        const docRef = doc(db, `artifacts/${appId}/fishCatches`, id);
         await deleteDoc(docRef);
 
         if (imagePath) {
@@ -438,7 +438,7 @@ function App() {
 
     if (window.confirm("Are you sure you want to delete this gear item?")) {
       try {
-        const docRef = doc(db, `artifacts/${appId}/users/${userId}/gearPurchases`, id);
+        const docRef = doc(db, `artifacts/${appId}/gearPurchases`, id);
         await deleteDoc(docRef);
 
         setMessage('Gear item deleted successfully!');
