@@ -5,7 +5,7 @@ import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider } from
 import { getFirestore, collection, addDoc, query, onSnapshot, orderBy, serverTimestamp, doc, getDoc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import { Image } from 'next/image';
 
 
 // Global variables provided by the Canvas environment
@@ -92,7 +92,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             <p className="text-gray-700 text-sm">{`Value: $${originalFish.estimatedValue.toFixed(2)}`}</p>
             {originalFish.location && <p className="text-gray-700 text-sm">{`Location: ${originalFish.location}`}</p>}
             {originalFish.imageUrl ? (
-              <img
+              <Image
                 src={originalFish.imageUrl}
                 alt={originalFish.species}
                 className="w-24 h-24 object-cover rounded-md mt-2"
@@ -594,7 +594,7 @@ function App() {
               {currentFishImagePreview && !fishImageFile && (
                 <div className="mt-2">
                   <p className="text-xs text-gray-500 mb-1">Current Image:</p>
-                  <img src={currentFishImagePreview} alt="Current Fish" className="w-16 h-16 object-cover rounded-md" />
+                  <Image src={currentFishImagePreview} alt="Current Fish" className="w-16 h-16 object-cover rounded-md" />
                   <button
                     type="button"
                     onClick={() => setCurrentFishImagePreview('')}
@@ -786,7 +786,7 @@ function App() {
                       <tr key={fish.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {fish.imageUrl ? (
-                            <img
+                            <Image
                               src={fish.imageUrl}
                               alt={fish.species}
                               className="w-16 h-16 object-cover rounded-md"
