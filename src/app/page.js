@@ -492,7 +492,7 @@ function App() {
           </div>
         )}
 
-        {!userId && (<button id="loginButton" onClick={() => signInWithPopup(auth, provider)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 shadow-md mb-6">Sign-in (Required to add new data)</button>)}
+        {!userId && (<button id="loginButton" onClick={() => signInWithPopup(auth, provider)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 shadow-md mb-6">Sign-in (Required to view and add new data)</button>)}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Payoff Summary */}
