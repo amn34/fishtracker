@@ -180,7 +180,7 @@ function App() {
         ...doc.data(),
         dateCaught: doc.data().dateCaught?.toDate() || new Date()
       }));
-      catches.sort((a, b) => a.dateCaught.getTime() - b.dateCaught.getTime());
+      catches.sort((a, b) => b.dateCaught.getTime() - a.dateCaught.getTime());
       setFishCatches(catches);
     }, (error) => {
       console.error("Error fetching fish catches:", error);
