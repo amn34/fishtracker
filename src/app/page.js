@@ -514,6 +514,41 @@ function App() {
           </div>
         </div>
 
+        {/* Debt Payoff Graph */}
+        <div className="bg-white p-6 rounded-xl shadow-md mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Fishing Payoff Progress Graph</h2>
+          {chartData.length === 0 ? (
+            <p className="text-gray-600 text-center py-4">Add some catches to see your payoff progress!</p>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={chartData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="Cumulative Fish Value"
+                  stroke="#22C55E"
+                  activeDot={{ r: 8 }}
+                  strokeWidth={3}
+                />
+                <Line
+                  type="stepAfter"
+                  dataKey="Total Investment"
+                  stroke="#3B82F6"
+                  strokeDasharray="5 5"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+
         {/* Add/Edit Fish Form */}
         <form onSubmit={handleSubmitFish} className="bg-gray-50 p-6 rounded-xl shadow-md mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -693,41 +728,6 @@ function App() {
             )}
           </div>
         </form>
-
-        {/* Debt Payoff Graph */}
-        <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Fishing Payoff Progress Graph</h2>
-          {chartData.length === 0 ? (
-            <p className="text-gray-600 text-center py-4">Add some catches to see your payoff progress!</p>
-          ) : (
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={chartData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="Cumulative Fish Value"
-                  stroke="#22C55E"
-                  activeDot={{ r: 8 }}
-                  strokeWidth={3}
-                />
-                <Line
-                  type="stepAfter"
-                  dataKey="Total Investment"
-                  stroke="#3B82F6"
-                  strokeDasharray="5 5"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
 
         {/* Tab Navigation */}
         <div className="flex justify-center mb-6">
